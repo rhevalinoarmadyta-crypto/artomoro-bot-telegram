@@ -1,0 +1,763 @@
+/* ============================================================
+   SCOPED STYLES FOR ATTENDANCE PORTAL
+   Prefixing all rules with .attendance-portal-root
+============================================================ */
+
+.attendance-portal-root {
+  /* Design Tokens & Theme variables */
+  --bg-base:       #0d0d0f;
+  --bg-surface:    #17171b;
+  --bg-card:       #1f1f26;
+  --bg-card-hover: #25252d;
+  --bg-input:      #13131a;
+
+  /* Border */
+  --border:        rgba(255,255,255,0.07);
+  --border-focus:  rgba(212,175,55,0.55);
+
+  /* Text */
+  --text-primary:  #f0eff4;
+  --text-secondary:#9898aa;
+  --text-muted:    #5a5a6e;
+
+  /* Accent — muted gold */
+  --accent:        #d4af37;
+  --accent-dim:    rgba(212,175,55,0.12);
+  --accent-glow:   rgba(212,175,55,0.30);
+
+  /* Status colours */
+  --green:         #3ecf72;
+  --green-dim:     rgba(62,207,114,0.12);
+  --green-glow:    rgba(62,207,114,0.35);
+  --red:           #ff5c5c;
+  --red-dim:       rgba(255,92,92,0.12);
+  --red-glow:      rgba(255,92,92,0.35);
+
+  /* Misc */
+  --radius-sm:  8px;
+  --radius-md:  14px;
+  --radius-lg:  22px;
+  --radius-xl:  32px;
+  --shadow-card: 0 8px 40px rgba(0,0,0,0.55);
+  --shadow-btn:  0 4px 20px rgba(0,0,0,0.4);
+  --transition:  0.28s cubic-bezier(0.4,0,0.2,1);
+
+  font-family: 'Inter', system-ui, sans-serif;
+  background-color: var(--bg-base);
+  color: var(--text-primary);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* ============================================================
+   AMBIENT BACKGROUND BLOBS
+============================================================ */
+.attendance-portal-root .bg-blob {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(90px);
+  opacity: 0.12;
+  pointer-events: none;
+  z-index: 0;
+}
+.attendance-portal-root .bg-blob--1 {
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, #d4af37, transparent 70%);
+  top: -120px; left: -150px;
+}
+.attendance-portal-root .bg-blob--2 {
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, #3ecf72, transparent 70%);
+  bottom: -100px; right: -100px;
+  opacity: 0.08;
+}
+
+/* ============================================================
+   FIXED HEADER
+============================================================ */
+.attendance-portal-root .app-header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 28px;
+  background: rgba(13,13,15,0.82);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border-bottom: 1px solid var(--border);
+}
+
+.attendance-portal-root .header-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.attendance-portal-root .header-logo {
+  width: 36px; height: 36px;
+  background: linear-gradient(135deg, var(--accent), #b8960c);
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 16px;
+  color: #0d0d0f;
+  letter-spacing: -0.5px;
+  flex-shrink: 0;
+}
+
+.attendance-portal-root .header-title {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+  background: linear-gradient(90deg, var(--text-primary) 60%, var(--accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.attendance-portal-root .header-subtitle {
+  font-size: 11px;
+  color: var(--text-muted);
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  margin-top: 1px;
+}
+
+.attendance-portal-root .header-badge {
+  font-size: 11px;
+  padding: 4px 10px;
+  border-radius: 100px;
+  background: var(--accent-dim);
+  border: 1px solid rgba(212,175,55,0.25);
+  color: var(--accent);
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+/* ============================================================
+   MAIN CONTENT AREA
+============================================================ */
+.attendance-portal-root .app-main {
+  flex: 1;
+  padding-top: 80px;
+  padding-bottom: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 64px);
+  position: relative;
+  z-index: 1;
+}
+
+/* ============================================================
+   CARD / PANEL
+============================================================ */
+.attendance-portal-root .card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-card);
+  padding: 40px 36px;
+  width: 100%;
+  max-width: 440px;
+  position: relative;
+  overflow: hidden;
+}
+
+.attendance-portal-root .card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(212,175,55,0.04) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+/* ============================================================
+   PHASE VIEWS — FADE ANIMATION
+============================================================ */
+.attendance-portal-root .phase {
+  animation: fadeUp 0.38s cubic-bezier(0.4,0,0.2,1) both;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ============================================================
+   PHASE 1 – LOGIN
+============================================================ */
+.attendance-portal-root .login-icon {
+  width: 64px; height: 64px;
+  background: linear-gradient(135deg, var(--accent), #b8960c);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 22px;
+  box-shadow: 0 8px 32px var(--accent-glow);
+  font-size: 28px;
+}
+
+.attendance-portal-root .card-heading {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  text-align: center;
+  margin-bottom: 6px;
+}
+
+.attendance-portal-root .card-subheading {
+  text-align: center;
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin-bottom: 28px;
+}
+
+/* Form elements */
+.attendance-portal-root .form-group {
+  margin-bottom: 18px;
+}
+
+.attendance-portal-root .form-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  letter-spacing: 0.7px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.attendance-portal-root .form-input {
+  width: 100%;
+  padding: 13px 16px;
+  background: var(--bg-input);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-family: inherit;
+  font-size: 15px;
+  outline: none;
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.attendance-portal-root .form-input::placeholder { color: var(--text-muted); }
+
+.attendance-portal-root .form-input:focus {
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 3px var(--accent-dim);
+}
+
+/* Error message */
+.attendance-portal-root .error-msg {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255,92,92,0.1);
+  border: 1px solid rgba(255,92,92,0.3);
+  border-radius: var(--radius-sm);
+  padding: 11px 14px;
+  font-size: 13px;
+  color: var(--red);
+  margin-bottom: 18px;
+  animation: fadeIn 0.25s ease;
+}
+
+/* Buttons */
+.attendance-portal-root .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 14px 20px;
+  border: none;
+  border-radius: var(--radius-md);
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform var(--transition), box-shadow var(--transition), background var(--transition), opacity var(--transition);
+  letter-spacing: 0.2px;
+  position: relative;
+  overflow: hidden;
+}
+
+.attendance-portal-root .btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: white;
+  opacity: 0;
+  transition: opacity 0.18s;
+}
+
+.attendance-portal-root .btn:active::after { opacity: 0.07; }
+.attendance-portal-root .btn:active { transform: scale(0.98); }
+
+.attendance-portal-root .btn-primary {
+  background: linear-gradient(135deg, var(--accent), #b8960c);
+  color: #0d0d0f;
+  box-shadow: 0 4px 20px var(--accent-glow);
+}
+.attendance-portal-root .btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px var(--accent-glow);
+}
+
+.attendance-portal-root .btn-green {
+  background: linear-gradient(135deg, var(--green), #2ea356);
+  color: #0d0d0f;
+  box-shadow: 0 4px 20px var(--green-glow);
+}
+.attendance-portal-root .btn-green:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px var(--green-glow);
+}
+
+.attendance-portal-root .btn-red {
+  background: linear-gradient(135deg, var(--red), #cc3333);
+  color: #fff;
+  box-shadow: 0 4px 20px var(--red-glow);
+}
+.attendance-portal-root .btn-red:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px var(--red-glow);
+}
+
+.attendance-portal-root .btn-ghost {
+  background: transparent;
+  color: var(--text-secondary);
+  border: 1.5px solid var(--border);
+}
+.attendance-portal-root .btn-ghost:hover {
+  background: rgba(255,255,255,0.04);
+  color: var(--text-primary);
+  border-color: rgba(255,255,255,0.15);
+}
+
+/* Loading spinner inside button */
+.attendance-portal-root .btn .spinner {
+  display: inline-block;
+  width: 17px; height: 17px;
+  border: 2px solid rgba(0,0,0,0.25);
+  border-top-color: #0d0d0f;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+.attendance-portal-root .btn.loading .btn-text { opacity: 0.5; }
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ============================================================
+   PHASE 2 – EMPLOYEE SELECTION
+============================================================ */
+.attendance-portal-root .section-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 18px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.attendance-portal-root .section-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.attendance-portal-root .employee-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 24px;
+}
+
+.attendance-portal-root .employee-card {
+  background: var(--bg-surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 24px 16px;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color var(--transition), background var(--transition), transform var(--transition), box-shadow var(--transition);
+  user-select: none;
+  position: relative;
+  overflow: hidden;
+}
+
+.attendance-portal-root .employee-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, var(--accent-dim), transparent);
+  opacity: 0;
+  transition: opacity var(--transition);
+}
+
+.attendance-portal-root .employee-card:hover {
+  border-color: rgba(212,175,55,0.4);
+  background: var(--bg-card-hover);
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+}
+
+.attendance-portal-root .employee-card:hover::before { opacity: 1; }
+.attendance-portal-root .employee-card:active { transform: scale(0.97); }
+
+.attendance-portal-root .employee-avatar {
+  width: 56px; height: 56px;
+  border-radius: 50%;
+  margin: 0 auto 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--accent), #b8960c);
+  color: #0d0d0f;
+  box-shadow: 0 4px 16px var(--accent-glow);
+}
+
+.attendance-portal-root .employee-name {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.attendance-portal-root .employee-role {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+/* Clock widget */
+.attendance-portal-root .live-clock {
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.attendance-portal-root .live-clock__time {
+  font-size: 36px;
+  font-weight: 300;
+  letter-spacing: 2px;
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.attendance-portal-root .live-clock__date {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-top: 4px;
+}
+
+/* Divider */
+.attendance-portal-root .divider {
+  height: 1px;
+  background: var(--border);
+  margin: 22px 0;
+}
+
+/* Recent logs */
+.attendance-portal-root .log-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 180px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.attendance-portal-root .log-list::-webkit-scrollbar { width: 4px; }
+.attendance-portal-root .log-list::-webkit-scrollbar-track { background: transparent; }
+.attendance-portal-root .log-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+.attendance-portal-root .log-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  font-size: 13px;
+  animation: fadeIn 0.25s ease;
+}
+
+.attendance-portal-root .log-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.attendance-portal-root .log-dot--in  { background: var(--green); box-shadow: 0 0 6px var(--green); }
+.attendance-portal-root .log-dot--out { background: var(--red);   box-shadow: 0 0 6px var(--red);   }
+
+.attendance-portal-root .log-name { font-weight: 600; color: var(--text-primary); }
+.attendance-portal-root .log-action { color: var(--text-secondary); }
+.attendance-portal-root .log-time {
+  margin-left: auto;
+  font-size: 11px;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+/* ============================================================
+   PHASE 3 – ATTENDANCE ACTION
+============================================================ */
+.attendance-portal-root .session-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--accent-dim);
+  border: 1px solid rgba(212,175,55,0.3);
+  border-radius: 100px;
+  padding: 6px 14px;
+  font-size: 13px;
+  color: var(--accent);
+  font-weight: 600;
+  margin-bottom: 22px;
+}
+
+.attendance-portal-root .session-pulse {
+  width: 8px; height: 8px;
+  background: var(--accent);
+  border-radius: 50%;
+  animation: pulse 1.8s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.5; transform: scale(0.7); }
+}
+
+.attendance-portal-root .session-name {
+  font-size: 32px;
+  font-weight: 800;
+  letter-spacing: -1px;
+  background: linear-gradient(90deg, var(--text-primary) 50%, var(--accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 8px;
+}
+
+.attendance-portal-root .session-hint {
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin-bottom: 28px;
+}
+
+.attendance-portal-root .action-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.attendance-portal-root .action-btn {
+  padding: 20px 12px;
+  border-radius: var(--radius-lg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+}
+
+.attendance-portal-root .action-btn .btn-icon {
+  font-size: 26px;
+  line-height: 1;
+}
+
+/* Today's status chips */
+.attendance-portal-root .status-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 22px;
+}
+
+.attendance-portal-root .status-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 100px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.attendance-portal-root .status-chip--in {
+  background: var(--green-dim);
+  border: 1px solid rgba(62,207,114,0.3);
+  color: var(--green);
+}
+
+.attendance-portal-root .status-chip--out {
+  background: var(--red-dim);
+  border: 1px solid rgba(255,92,92,0.3);
+  color: var(--red);
+}
+
+.attendance-portal-root .status-chip--none {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+}
+
+/* ============================================================
+   TOAST NOTIFICATION
+============================================================ */
+.attendance-portal-root .toast-container {
+  position: fixed;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  pointer-events: none;
+}
+
+.attendance-portal-root .toast {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 14px 20px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.6);
+  font-size: 14px;
+  color: var(--text-primary);
+  white-space: nowrap;
+  animation: toastIn 0.38s cubic-bezier(0.4,0,0.2,1) forwards;
+  pointer-events: all;
+  max-width: 90vw;
+  position: relative;
+  overflow: hidden;
+}
+
+.attendance-portal-root .toast.fade-out {
+  animation: toastOut 0.38s cubic-bezier(0.4,0,0.2,1) forwards;
+}
+
+.attendance-portal-root .toast-icon {
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.attendance-portal-root .toast-progress {
+  position: absolute;
+  bottom: 0; left: 0;
+  height: 3px;
+  border-radius: 3px;
+}
+
+.attendance-portal-root .toast--success .toast-progress { background: var(--green); }
+.attendance-portal-root .toast--error   .toast-progress { background: var(--red);   }
+
+@keyframes toastIn {
+  from { opacity: 0; transform: translateY(16px) scale(0.95); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes toastOut {
+  from { opacity: 1; transform: translateY(0) scale(1); }
+  to   { opacity: 0; transform: translateY(16px) scale(0.95); }
+}
+
+/* ============================================================
+   FOOTER
+============================================================ */
+.attendance-portal-root .app-footer {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  padding: 16px;
+  font-size: 12px;
+  color: var(--text-muted);
+  border-top: 1px solid var(--border);
+  background: var(--bg-base);
+}
+
+/* ============================================================
+   ADMIN BACK BUTTON (FLOATING ELEVATED)
+============================================================ */
+.attendance-portal-root .admin-back-btn {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 101;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  font-size: 12px;
+  font-weight: 700;
+  padding: 8px 16px;
+  border-radius: 100px;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  transition: all var(--transition);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.attendance-portal-root .admin-back-btn:hover {
+  background: var(--accent);
+  color: #0d0d0f;
+  border-color: var(--accent);
+  box-shadow: 0 4px 12px var(--accent-glow);
+  transform: translateY(-1px);
+}
+
+/* ============================================================
+   RESPONSIVE
+============================================================ */
+@media (max-width: 500px) {
+  .attendance-portal-root .card { padding: 28px 20px; border-radius: var(--radius-lg); }
+  .attendance-portal-root .live-clock__time { font-size: 28px; }
+  .attendance-portal-root .session-name { font-size: 26px; }
+  .attendance-portal-root .action-buttons { grid-template-columns: 1fr; }
+  .attendance-portal-root .employee-grid { grid-template-columns: 1fr; }
+  .attendance-portal-root .header-subtitle { display: none; }
+  .attendance-portal-root .admin-back-btn {
+    top: auto;
+    bottom: 74px;
+    right: 50%;
+    transform: translateX(50%);
+  }
+  .attendance-portal-root .admin-back-btn:hover {
+    transform: translateX(50%) translateY(-1px);
+  }
+}
+
+@media (min-width: 768px) {
+  .attendance-portal-root .card { max-width: 480px; }
+}

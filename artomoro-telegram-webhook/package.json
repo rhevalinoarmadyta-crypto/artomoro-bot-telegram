@@ -1,0 +1,15 @@
+{
+  "name": "artomoro-telegram-webhook",
+  "version": "1.0.0",
+  "description": "Telegram webhook for manual order recording",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "axios": "^1.6.0",
+    "dotenv": "^16.3.0",
+    "express": "^4.18.0",
+    "sqlite3": "^5.1.0"
+  }
+}

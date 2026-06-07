@@ -1,0 +1,23 @@
+# Dependency directories
+node_modules/
+**/node_modules/
+
+# Local environment variables
+.env
+**/.env
+.env.local
+.env.*.local
+
+# Databases & local files
+*.sqlite
+*.db
+**/*.sqlite
+**/*.db
+
+# Production builds
+dist/
+**/dist/
+
+# OS files
+.DS_Store
+**/.DS_Store
