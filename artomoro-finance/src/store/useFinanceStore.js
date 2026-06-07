@@ -170,7 +170,7 @@ export const useFinanceStore = create(
       const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
       const apiUrl = isLocal 
         ? 'http://localhost:3000' 
-        : 'https://light-bees-move.loca.lt';
+        : 'https://23fe3194de1fe3.lhr.life';
 
       const response = await fetch(`${apiUrl}/api/manual-orders`, {
         headers: {
