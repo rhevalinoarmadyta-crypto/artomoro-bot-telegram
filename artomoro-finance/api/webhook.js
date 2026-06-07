@@ -2,7 +2,8 @@
 // Endpoint: GET/POST /api/webhook
 
 const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || '8605041130:AAH_MCDxLr6EL_S0wTdqd2vkYxXETpdMLTY';
-const KV_STORE_URL = 'https://kvdb.io/artomoro_gallery_8605041130/manual_orders';
+const BUCKET_ID = process.env.KVDB_BUCKET_ID || 'GHZuj4zaR2QWYxhRqEaxas';
+const KV_STORE_URL = `https://kvdb.io/${BUCKET_ID}/manual_orders`;
 
 // Helper to determine Jakarta time (UTC+7) hour for shift classification
 function getJakartaHour(unixSecs) {
