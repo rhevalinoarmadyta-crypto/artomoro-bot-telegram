@@ -168,15 +168,17 @@ export const useFinanceStore = create(
   fetchWebhookOrders: async () => {
     try {
       const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-      const apiUrl = isLocal 
-        ? 'http://localhost:3000' 
-        : 'https://23fe3194de1fe3.lhr.life';
+      const fetchUrl = isLocal 
+        ? 'http://localhost:3000/api/manual-orders' 
+        : '/api/webhook';
 
-      const response = await fetch(`${apiUrl}/api/manual-orders`, {
+      const options = isLocal ? {
         headers: {
           'Bypass-Tunnel-Reminder': 'true'
         }
-      });
+      } : {};
+
+      const response = await fetch(fetchUrl, options);
       if (response.ok) {
         const data = await response.json();
         set({ webhookOrders: data });
@@ -220,11 +222,35 @@ export const useFinanceStore = create(
         adjustment: 0,
         calculatedNet: item.total_harga || 0,
         isWebhookOrder: true,
-        webhookId: item.id
+        webhookId: item.id,
+        rawDate: item.created_at || new Date(dateObj).toISOString()
       }
     })
 
-    return [...ledger, ...mappedWebhook]
+    const combined = [...ledger, ...mappedWebhook]
+
+    const parseDateToTimestamp = (dateStr) => {
+      if (!dateStr) return 0;
+      let d = new Date(dateStr);
+      if (!isNaN(d.getTime())) return d.getTime();
+      const parts = dateStr.match(/^(\d{1,2})[-/](\d{1,2})[-/](\d{4})(?:\s+(\d{1,2}):(\d{1,2})(?::(\d{1,2}))?)?/);
+      if (parts) {
+        const day = parseInt(parts[1], 10);
+        const month = parseInt(parts[2], 10) - 1;
+        const year = parseInt(parts[3], 10);
+        const hour = parts[4] ? parseInt(parts[4], 10) : 0;
+        const minute = parts[5] ? parseInt(parts[5], 10) : 0;
+        const second = parts[6] ? parseInt(parts[6], 10) : 0;
+        return new Date(year, month, day, hour, minute, second).getTime();
+      }
+      return 0;
+    };
+
+    return combined.sort((a, b) => {
+      const timeA = parseDateToTimestamp(a.rawDate || a.date);
+      const timeB = parseDateToTimestamp(b.rawDate || b.date);
+      return timeB - timeA;
+    });
   },
 
   // Stock Auto-Deduction Logic
