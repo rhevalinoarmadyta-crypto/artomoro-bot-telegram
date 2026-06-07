@@ -167,7 +167,16 @@ export const useFinanceStore = create(
   // Telegram Webhook fetch action
   fetchWebhookOrders: async () => {
     try {
-      const response = await fetch('http://localhost:3000/api/manual-orders');
+      const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+      const apiUrl = isLocal 
+        ? 'http://localhost:3000' 
+        : 'https://light-bees-move.loca.lt';
+
+      const response = await fetch(`${apiUrl}/api/manual-orders`, {
+        headers: {
+          'Bypass-Tunnel-Reminder': 'true'
+        }
+      });
       if (response.ok) {
         const data = await response.json();
         set({ webhookOrders: data });
